@@ -46,7 +46,7 @@ ADC_HandleTypeDef hadc;
 TIM_HandleTypeDef htim3;
 
 /* USER CODE BEGIN PV */
-uint32_t prev_millis = 0; //do we need these?
+uint32_t prev_millis = 0; //for the debounce delay
 uint32_t curr_millis = 0;
 uint32_t delay_t = 500; // Initialise delay to 500ms
 uint32_t adc_val;
