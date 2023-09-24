@@ -46,7 +46,7 @@ ADC_HandleTypeDef hadc;
 TIM_HandleTypeDef htim3;
 
 /* USER CODE BEGIN PV */
-uint32_t prev_millis = 0;
+uint32_t prev_millis = 0; //do we need these?
 uint32_t curr_millis = 0;
 uint32_t delay_t = 500; // Initialise delay to 500ms
 uint32_t adc_val;
@@ -101,7 +101,6 @@ int main(void)
 
   /* USER CODE BEGIN 2 */
   init_LCD();
-
   // PWM setup
   uint32_t CCR = 0;
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3); // Start PWM on TIM3 Channel 3
@@ -348,13 +347,15 @@ static void MX_GPIO_Init(void)
 void EXTI0_1_IRQHandler(void)
 {
 	// TODO: Add code to switch LED7 delay frequency
-	//switch between 1Hz and 2Hz
-	if (delay_t == 500){
+	//switch between 1Hz and 2Hz, will only switch if there is more than 100 mils difference, creating a debounce delay
+	curr_millis = HAL_GetTick();
+	if ((delay_t == 500)&& (curr_millis > prev_millis +100)){
 		delay_t = 250;
 	}
 	else{
 		delay_t = 500;
 	}
+	prev_millis = curr_millis;
 	HAL_GPIO_EXTI_IRQHandler(Button0_Pin); // Clear interrupt flags
 }
 
