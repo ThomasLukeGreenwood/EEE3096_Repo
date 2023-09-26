@@ -349,12 +349,15 @@ void EXTI0_1_IRQHandler(void)
 	// TODO: Add code to switch LED7 delay frequency
 	//switch between 1Hz and 2Hz, will only switch if there is more than 100 mils difference, creating a debounce delay
 	curr_millis = HAL_GetTick();
-	if ((delay_t == 500)&& (curr_millis > prev_millis +100)){
-		delay_t = 250;
+	if (curr_millis > prev_millis + 100){
+		if (delay_t == 500){
+			delay_t = 250;
+		}
+		else{
+			delay_t = 500;
+		}
 	}
-	else{
-		delay_t = 500;
-	}
+
 	prev_millis = curr_millis;
 	HAL_GPIO_EXTI_IRQHandler(Button0_Pin); // Clear interrupt flags
 }
